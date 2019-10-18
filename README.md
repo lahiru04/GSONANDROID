@@ -4,24 +4,24 @@ How to download data using gson and store it in a android app
 ### json preview 
 
 ```
-{
-    "result": true,
-    "priceGroup": [
-        {
-            "priceG_Id": 13368,
-            "price_list_no": "BDGT",
-            "priceG_Name": "BUDGET PRICE LIST",
-            "items": [
-                {
-                    "product_id": 4042,
-                    "catalog_no": "30WLT120",
-                    "mrp": "3850.00",
-                    "sale_price": "2845.65"
-                }
-                ]
-                }
-                ]
-                }
+{  
+   "result":true,
+   "priceGroup":[  
+      {  
+         "priceG_Id":13368,
+         "price_list_no":"BDGT",
+         "priceG_Name":"BUDGET PRICE LIST",
+         "items":[  
+            {  
+               "product_id":4042,
+               "catalog_no":"30WLT120",
+               "mrp":"3850.00",
+               "sale_price":"2845.65"
+            }
+         ]
+      }
+   ]
+}
 
 ```
 Create classes those are matching with json
