@@ -141,3 +141,85 @@ public class PriceGroupItemG {
 
 ```
 
+to call api use this
+
+```
+   public static PriceGroupResponse postToServerGzipGsonPriceGroup(String token, String url, List<CustomNameValuePair> params) throws IOException {
+        Log.d("<> URL <>", url);
+        PriceGroupResponse response_gson = null;
+
+        URL postURL = new URL(url);
+        HttpURLConnection con = (HttpURLConnection) postURL.openConnection();
+
+        con.setRequestProperty("Accept", "application/json");
+        con.setRequestProperty("ContentType", "application/json");
+        con.setRequestProperty("Authorization", "Bearer " + token);
+        con.setRequestProperty("Accept-Encoding", "gzip");
+        con.setConnectTimeout(100 * 1000);
+        con.setReadTimeout(300 * 1000);
+        con.setRequestMethod("POST");
+        con.setDoInput(true);
+        con.setDoOutput(true);
+
+        OutputStream os = con.getOutputStream();
+        BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(os, "UTF-8"));
+        writer.write(generatePOSTParams(params));
+        writer.flush();
+        writer.close();
+        os.close();
+
+        con.connect();
+
+        int status = con.getResponseCode();
+        switch (status) {
+            case 200:
+            case 201:
+
+                Reader reader = null;
+                if ("gzip".equals(con.getContentEncoding())) {
+                    reader = new InputStreamReader(new GZIPInputStream(con.getInputStream()));
+
+                } else {
+                    reader = new InputStreamReader(con.getInputStream());
+                }
+
+                Gson gson = new Gson();
+                response_gson = gson.fromJson(reader, PriceGroupResponse.class);
+
+        }
+
+
+        return response_gson;
+    }
+
+
+```
+other usefull methods and classes
+
+```
+
+    private static String generatePOSTParams(List<CustomNameValuePair> params) throws UnsupportedEncodingException {
+        StringBuilder result = new StringBuilder();
+        boolean first = true;
+
+        for (CustomNameValuePair pair : params) {
+            if (pair != null) {
+                if (first)
+                    first = false;
+                else
+                    result.append("&");
+
+                result.append(URLEncoder.encode(pair.getName(), "UTF-8"));
+                result.append("=");
+                result.append(URLEncoder.encode(pair.getValue(), "UTF-8"));
+            }
+        }
+
+        Log.d("ERROR", "Server REQUEST : " + result.toString());
+        Log.d("ERROR", "Upload size : " + result.toString().getBytes().length + " bytes");
+
+        return result.toString();
+    }
+    
+```
+
